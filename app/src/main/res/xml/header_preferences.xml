@@ -1,0 +1,13 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Preference
+        app:fragment="com.zpdsherlock.clickfarmassistant.ClickFarmSettingsActivity$RecordFragment"
+        app:key="recorder_header"
+        app:title="@string/recorder_header" />
+
+    <Preference
+        app:fragment="com.zpdsherlock.clickfarmassistant.ClickFarmSettingsActivity$ReplayFragment"
+        app:key="replay_header"
+        app:title="@string/replay_header" />
+
+</PreferenceScreen>
