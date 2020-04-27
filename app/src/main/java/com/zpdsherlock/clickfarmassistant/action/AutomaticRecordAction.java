@@ -18,8 +18,8 @@ public class AutomaticRecordAction extends BaseAutomaticAction {
 
     @Override
     protected boolean onCheckAutomaticActionEnable(AccessibilityService service, AccessibilityEvent event) {
-        String packageName = event.getPackageName().toString();
-        return !"com.zpdsherlock.clickfarmassistant".equals(packageName);
+        CharSequence packageName = event.getPackageName();
+        return packageName != null && !"com.zpdsherlock.clickfarmassistant".equals(packageName.toString());
     }
 
     @Override
