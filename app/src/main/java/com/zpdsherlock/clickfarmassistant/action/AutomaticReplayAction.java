@@ -34,34 +34,38 @@ public class AutomaticReplayAction extends BaseAutomaticAction {
     protected void onWindowStateChanged(AccessibilityService service, AccessibilityEvent event) {
         AccessibilityNodeInfo windowInfo = service.getRootInActiveWindow();
         if (windowInfo != null) {
-            searchTargetNode(windowInfo, new Function<AccessibilityNodeInfo, Boolean>() {
-                @Override
-                public Boolean apply(AccessibilityNodeInfo node) {
-                    LinkedList<RecordNode> nodes = RecordStore.getInstance().getNodes();
-                    RecordNode target = nodes.peek();
-                    if (target != null) {
-                        if (!Objects.equals(target.getPackageName(), node.getPackageName().toString())) {
-                            return false;
-                        }
-                        if (!Objects.equals(target.getClassName(), node.getClassName().toString())) {
-                            return false;
-                        }
-                        if (Objects.equals(target.getText(), node.getText().toString())) {
-                            return true;
-                        }
-                    }
-                    return false;
-                }
-            });
+            searchTargetNode(windowInfo);
             windowInfo.recycle();
         }
     }
 
-    private void searchTargetNode(AccessibilityNodeInfo node, Function<AccessibilityNodeInfo, Boolean> nodeFilter) {
-        if (!nodeFilter.apply(node)) {
-            for (int i = 0; i < node.getChildCount(); ++i) {
-                searchTargetNode(node.getChild(i), nodeFilter);
+    private void searchTargetNode(AccessibilityNodeInfo node) {
+        boolean checker = false;
+        LinkedList<RecordNode> nodes = RecordStore.getInstance().getNodes();
+        RecordNode target = nodes.peek();
+        if (target != null) {
+            if (Objects.equals(target.getPackageName(), node.getPackageName().toString()) &&
+                    Objects.equals(target.getClassName(), node.getClassName().toString())) {
+                // match the text of the source's sub-tree.
+//                if (target.getText().size() == node.getText()) {
+//
+//                }
+//                for () {
+//
+//                }
+//                if (Objects.equals(target.getText(), String.format("[%s]", node.getText() == null ? "" : node.getText().toString()))) {
+//                    node.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+//                    nodes.poll();
+//                    checker = true;
+//                }
             }
+        }
+        if (!checker) {
+            for (int i = 0; i < node.getChildCount(); ++i) {
+                searchTargetNode(node.getChild(i));
+            }
+        } else if (RecordStore.getInstance().getNodes().isEmpty()) {
+            onInterrupt();
         }
     }
 

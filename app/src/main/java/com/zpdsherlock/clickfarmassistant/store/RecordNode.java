@@ -2,12 +2,15 @@ package com.zpdsherlock.clickfarmassistant.store;
 
 import android.graphics.Rect;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RecordNode {
     private String packageName;
 
     private String className;
 
-    private String text;
+    private List<String> text = new ArrayList<>();
 
     private Rect rect = new Rect();
 
@@ -27,12 +30,8 @@ public class RecordNode {
         this.className = className;
     }
 
-    public String getText() {
+    public List<String> getText() {
         return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
     }
 
     public Rect getRect() {

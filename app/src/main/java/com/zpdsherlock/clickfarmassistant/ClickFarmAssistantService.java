@@ -1,6 +1,8 @@
 package com.zpdsherlock.clickfarmassistant;
 
 import android.accessibilityservice.AccessibilityService;
+import android.app.Instrumentation;
+import android.app.UiAutomation;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -67,9 +69,14 @@ public class ClickFarmAssistantService extends AccessibilityService {
     }
 
     @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.d(TAG, "onStartCommand");
+        return super.onStartCommand(intent, flags, startId);
+    }
+
+    @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         AutomaticMode mode = mAutomaticManager.getMode();
-        Log.d(TAG, "onAccessibilityEvent: " + mode.name());
         if (mode != AutomaticMode.None) {
             synchronized (AutomaticAction.class) {
                 if (mAction != null) {
